@@ -1,5 +1,6 @@
 module "vnet_hub" {
-  source   = "c:\\dev\\repo\\modules\\vnet"
+  source   = "app.terraform.io/roman2025/vnet/azurerm"
+  version = "0.0.1"
   enviro   = var.enviro
   name     =  "hub"
   prjnum   = var.prjnum
@@ -11,7 +12,8 @@ module "vnet_hub" {
 }
 
 module "bastion_public_ip" {
-  source   = "c:\\dev\\repo\\modules\\pip"
+  source   = "app.terraform.io/roman2025/pip/azurerm"
+  version = "0.0.1"
   enviro   = var.enviro
   name     = "bast"
   prjname  = var.prjname
@@ -24,7 +26,8 @@ module "bastion_public_ip" {
 }
 
 module "azfw_subnet" {
-  source   = "c:\\dev\\repo\\modules\\subnet"
+  source   = "app.terraform.io/roman2025/subnet/azurerm"
+  version = "0.0.1"
   name     = "AzureFirewallSubnet"
   rgname   = lookup(module.hub_rg.rgnames, "Connectivity", "fail")
   virtual_network_name = module.vnet_hub.vnet_name
@@ -33,7 +36,8 @@ module "azfw_subnet" {
 }
 
 module "bastion_subnet" {
-  source   = "c:\\dev\\repo\\modules\\subnet"
+  source   = "app.terraform.io/roman2025/subnet/azurerm"
+  version = "0.0.1"
   name     = "AzureBastionSubnet"
   rgname   = lookup(module.hub_rg.rgnames, "Connectivity", "fail")
   virtual_network_name = module.vnet_hub.vnet_name
@@ -42,7 +46,8 @@ module "bastion_subnet" {
 }
 
 module "gateway_subnet" {
-  source   = "c:\\dev\\repo\\modules\\subnet"
+  source   = "app.terraform.io/roman2025/subnet/azurerm"
+  version = "0.0.1"
   name     = "GatewaySubnet"
   rgname   = lookup(module.hub_rg.rgnames, "Connectivity", "fail")
   virtual_network_name = module.vnet_hub.vnet_name
@@ -51,7 +56,8 @@ module "gateway_subnet" {
 }
 
 module "azfw_public_ip" {
-  source   = "c:\\dev\\repo\\modules\\pip"
+  source   = "app.terraform.io/roman2025/pip/azurerm"
+  version = "0.0.1"
   enviro   = var.enviro
   name     = "azfw"
   prjname  = var.prjname

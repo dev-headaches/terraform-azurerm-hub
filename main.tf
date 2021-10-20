@@ -14,7 +14,8 @@ locals {
 }
 
 module "hub_rg" {
-  source    = "c:\\dev\\repo\\modules\\rg"
+  source  = "app.terraform.io/roman2025/rg/azurerm"
+  version = "0.0.1"
   resource_groups = local.resource_groups
   prefix    = "rg_hub"
   orgname   = var.orgname
@@ -25,7 +26,8 @@ module "hub_rg" {
 }
 
 module "hub_firewall" {
-  source                            = "c:\\dev\\repo\\modules\\firewall"
+  source                            = "app.terraform.io/roman2025/firewall/azurerm"
+  version = "0.0.1"
   firewall_name                     = format("%s%s%s%s", "fw_hub_", var.prjname, var.enviro, var.prjnum)
   enviro                            = var.enviro
   fwsku                             = "Premium"
@@ -42,7 +44,8 @@ module "hub_firewall" {
 }
 
 module "hub_law" {
-  source           = "c:\\dev\\repo\\modules\\law"
+  source           = "app.terraform.io/roman2025/law/azurerm"
+  version = "0.0.1"
   wsname           = format("%s%s%s%s", "law-hub-", var.prjname, var.enviro, var.prjnum)
   rgname           = lookup(module.hub_rg.rgnames, "Security", "fail")
   location         = var.location
@@ -51,7 +54,8 @@ module "hub_law" {
 }
 
 module "FirewallRuleCollectionGroup" {
-  source     = "c:\\dev\\repo\\modules\\hubfirewallrulecollectiongroup"
+  source     = "app.terraform.io/roman2025/hubfirewallrulecollectiongroup/azurerm"
+  version = "0.0.1"
   enviro     = var.enviro
   prjname    = var.prjname
   prjnum     = var.prjnum
@@ -63,7 +67,8 @@ module "FirewallRuleCollectionGroup" {
 }
 
 module "azfw_hub_gateway_routetable" {
-  source           = "c:\\dev\\repo\\modules\\routetable"
+  source           = "app.terraform.io/roman2025/routetable/azurerm"
+  version = "0.0.1"
   tablename        = format("%s%s%s%s", "rt_table_snet_hub_gateway", var.prjname, var.enviro, var.prjnum)
   location         = var.location
   rgname           = lookup(module.hub_rg.rgnames, "Connectivity", "fail")
@@ -72,7 +77,8 @@ module "azfw_hub_gateway_routetable" {
 }
 
 module "azfw_hub_gateway_route" {
-  source                         = "c:\\dev\\repo\\modules\\route"
+  source                         = "app.terraform.io/roman2025/route/azurerm"
+  version = "0.0.1"
   routename                      = format("%s%s%s%s", "rt_azfw_default_", var.prjname, var.enviro, var.prjnum)
   rgname                         = lookup(module.hub_rg.rgnames, "Connectivity", "fail")
   address_prefix                 = "192.168.50.0/24"
@@ -82,7 +88,8 @@ module "azfw_hub_gateway_route" {
 }
 
 module "hub_bastion" {
-  source                = "c:\\dev\\repo\\modules\\bastion"
+  source                = "app.terraform.io/roman2025/bastion/azurerm"
+  version = "0.0.1"
   name                  = "hub"
   enviro                = var.enviro
   orgname               = var.orgname
