@@ -15,7 +15,7 @@ locals {
 
 module "hub_rg" {
   source  = "app.terraform.io/roman2025/rg/azurerm"
-  version = "0.0.1"
+  version = "0.0.2"
   resource_groups = local.resource_groups
   prefix    = "rg_hub"
   orgname   = var.orgname
