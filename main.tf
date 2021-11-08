@@ -14,24 +14,22 @@ locals {
 }
 
 module "hub_rg" {
-  source  = "app.terraform.io/roman2025/rg/azurerm"
-  version = "0.0.2"
+  source          = "app.terraform.io/roman2025/rg/azurerm"
+  version         = ">= 0.0.3"
   resource_groups = local.resource_groups
-  prefix    = "rg_hub"
-  orgname   = var.orgname
-  enviro    = var.enviro
-  prjname   = var.prjname
-  prjnum    = var.prjnum
-  location  = var.location
+  prefix          = "rg_hub"
+  orgname         = var.orgname
+  enviro          = var.enviro
+  prjnum          = var.prjnum
+  location        = var.location
 }
 
 module "hub_firewall" {
   source                            = "app.terraform.io/roman2025/firewall/azurerm"
-  version = "0.0.1"
-  firewall_name                     = format("%s%s%s%s", "fw_hub_", var.prjname, var.enviro, var.prjnum)
+  version                           = ">= 0.0.2"
+  firewall_name                     = format("%s_%s_%s_%s", "fw_hub", var.orgname, var.enviro, var.prjnum)
   enviro                            = var.enviro
   fwsku                             = "Premium"
-  prjname                           = var.prjname
   prjnum                            = var.prjnum
   location                          = var.location
   rgname                            = lookup(module.hub_rg.rgnames, "Connectivity", "fail")
@@ -45,8 +43,8 @@ module "hub_firewall" {
 
 module "hub_law" {
   source           = "app.terraform.io/roman2025/law/azurerm"
-  version = "0.0.1"
-  wsname           = format("%s%s%s%s", "law-hub-", var.prjname, var.enviro, var.prjnum)
+  version          = ">= 0.0.1"
+  wsname           = format("%s-%s-%s-%s", "law-hub", var.orgname, var.enviro, var.prjnum)
   rgname           = lookup(module.hub_rg.rgnames, "Security", "fail")
   location         = var.location
   lawSKU           = "PerGB2018"
@@ -55,31 +53,29 @@ module "hub_law" {
 
 module "FirewallRuleCollectionGroup" {
   source     = "app.terraform.io/roman2025/hubfirewallrulecollectiongroup/azurerm"
-  version = "0.0.1"
+  version    = ">= 0.0.4"
   enviro     = var.enviro
-  prjname    = var.prjname
+  orgname    = var.orgname
   prjnum     = var.prjnum
-  location   = var.location
-  rgname     = lookup(module.hub_rg.rgnames, "NetSec", "fail")
   fwp_hub_id = module.hub_firewall.fwp_id
   web_categories_blacklist = var.web_categories_blacklist
   fqdnblacklist     = var.fqdnblacklist
 }
 
 module "azfw_hub_gateway_routetable" {
-  source           = "app.terraform.io/roman2025/routetable/azurerm"
-  version = "0.0.1"
-  tablename        = format("%s%s%s%s", "rt_table_snet_hub_gateway", var.prjname, var.enviro, var.prjnum)
-  location         = var.location
-  rgname           = lookup(module.hub_rg.rgnames, "Connectivity", "fail")
-  AssocSubnet_id   = module.gateway_subnet.subnet_id
+  source              = "app.terraform.io/roman2025/routetable/azurerm"
+  version             = ">= 0.0.1"
+  tablename           = format("%s_%s_%s_%s", "rt_table_snet_hub_gateway", var.orgname, var.enviro, var.prjnum)
+  location            = var.location
+  rgname              = lookup(module.hub_rg.rgnames, "Connectivity", "fail")
+  AssocSubnet_id      = module.gateway_subnet.subnet_id
   disable_bgp_rt_prop = false
 }
 
 module "azfw_hub_gateway_route" {
   source                         = "app.terraform.io/roman2025/route/azurerm"
-  version = "0.0.1"
-  routename                      = format("%s%s%s%s", "rt_azfw_default_", var.prjname, var.enviro, var.prjnum)
+  version                        = ">= 0.0.1"
+  routename                      = format("%s_%s_%s_%s", "rt_azfw_default", var.orgname, var.enviro, var.prjnum)
   rgname                         = lookup(module.hub_rg.rgnames, "Connectivity", "fail")
   address_prefix                 = "192.168.50.0/24"
   next_hop_type                  = "VirtualAppliance"
@@ -89,11 +85,10 @@ module "azfw_hub_gateway_route" {
 
 module "hub_bastion" {
   source                = "app.terraform.io/roman2025/bastion/azurerm"
-  version = "0.0.1"
+  version               = ">= 0.0.2"
   name                  = "hub"
   enviro                = var.enviro
   orgname               = var.orgname
-  prjname               = var.prjname
   prjnum                = var.prjnum
   location              = var.location
   bastionrgname         = lookup(module.hub_rg.rgnames, "Connectivity", "fail")
