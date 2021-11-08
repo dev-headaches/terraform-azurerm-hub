@@ -32,6 +32,7 @@ module "hub_firewall" {
   fwsku                             = "Premium"
   prjnum                            = var.prjnum
   location                          = var.location
+  orgname                           = var.orgname
   rgname                            = lookup(module.hub_rg.rgnames, "Connectivity", "fail")
   AzureFirewall_Public_IP_ID        = module.azfw_public_ip.public_ip_id
   AzureFirewallSubnet_ID            = module.azfw_subnet.subnet_id
