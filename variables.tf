@@ -27,25 +27,14 @@ variable "orgname" {
   default     = "tcld"
 }
 
-variable "vnet_hub_address_spaces" {
-  type        = list
-  default     = ["192.168.145.0/24"]
+variable "vnet_hub_address_space" {
+  type        = string
+  default     = "192.168.145.0/24"
 }
+
 variable "vnet_hub_dns_servers" {
   type        = list
   default     = ["8.8.8.8", "1.1.1.1"]
-}
-variable "azfw_subnet_prefixes" {
-  type        = list
-  default     = ["192.168.145.0/26"]
-}
-variable "bastion_subnet_prefixes" {
-  type        = list
-  default     = ["192.168.145.64/26"]
-}
-variable "gateway_subnet_prefixes" {
-  type        = list
-  default     = ["192.168.145.128/27"]
 }
 
 variable "resourcegroupnames" {
@@ -64,3 +53,23 @@ variable "fqdnblacklist" {
   type    = list(any)
   default = ["yahoo.com", "ipchicken.com", "kiloroot.com", "*.yahoo.com", "*.ipchicken.com", "*.kiloroot.com"]
 }
+
+/*
+variable "vnet_hub_address_spaces" {
+  type        = list
+  default     = ["192.168.145.0/24"]
+}
+
+variable "azfw_subnet_prefixes" {
+  type        = list
+  default     = ["192.168.145.0/26"]
+}
+variable "bastion_subnet_prefixes" {
+  type        = list
+  default     = ["192.168.145.64/26"]
+}
+variable "gateway_subnet_prefixes" {
+  type        = list
+  default     = ["192.168.145.128/27"]
+}
+*/
