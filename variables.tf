@@ -7,7 +7,7 @@ variable "enviro" {
 variable "prjname" {
   type        = string
   description = "define the project name ex. prj02"
-  default     = "nbdemo"
+  default     = "csdemo"
 }
 
 variable "prjnum" {
@@ -24,7 +24,7 @@ variable "location" {
 
 variable "orgname" {
   type        = string
-  default     = "tcld"
+  default     = "clds"
 }
 
 variable "vnet_hub_address_space" {
